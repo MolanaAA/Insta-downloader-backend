@@ -1,0 +1,30 @@
+# Enable directory browsing for downloads folder
+<Directory "/downloads">
+    Options +Indexes
+    AllowOverride None
+    Require all granted
+</Directory>
+
+# Set proper MIME types for video files
+<IfModule mod_mime.c>
+    AddType video/mp4 .mp4
+    AddType video/webm .webm
+    AddType video/ogg .ogv
+</IfModule>
+
+# Enable CORS for downloads
+<IfModule mod_headers.c>
+    <FilesMatch "\.(mp4|webm|ogv)$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, OPTIONS"
+        Header set Access-Control-Allow-Headers "Range"
+    </FilesMatch>
+</IfModule>
+
+# Handle large file uploads
+<IfModule mod_php.c>
+    php_value upload_max_filesize 100M
+    php_value post_max_size 100M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule> 
