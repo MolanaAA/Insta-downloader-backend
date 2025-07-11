@@ -3,6 +3,8 @@ node_modules/
 client/node_modules/
 
 client/
+client/build/
+client/dist/
 
 # Production builds
 client/build/
