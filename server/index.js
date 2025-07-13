@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
@@ -9,9 +10,9 @@ const cloudinary = require('cloudinary').v2;
 const { extractVideoUrl, CONFIG, extractInstagramVideoWithPuppeteer } = require('./apiHelpers');
 
 cloudinary.config({
-  cloud_name: 'dgn6w4tyy',
-  api_key: '116156825473626',
-  api_secret: '6JLqdbYyQrRBEFE-IGZdY_OTrBU',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 const app = express();
@@ -346,8 +347,8 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     timestamp: new Date().toISOString(),
     cloudinary: {
-      cloud_name: 'dgn6w4tyy',
-      status: 'Configured'
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'Not set',
+      status: process.env.CLOUDINARY_CLOUD_NAME ? 'Configured' : 'Not configured'
     }
   });
 });
@@ -359,7 +360,7 @@ app.listen(PORT, () => {
   console.log('🏥 Health check:', `http://localhost:${PORT}/api/health`);
   console.log('📥 Download endpoint:', `http://localhost:${PORT}/api/download`);
   console.log('🤖 Puppeteer endpoint:', `http://localhost:${PORT}/api/download-puppeteer`);
-  console.log('☁️ Cloudinary: Configured (cloud_name: dgn6w4tyy)');
+  console.log('☁️ Cloudinary:', process.env.CLOUDINARY_CLOUD_NAME ? `Configured (cloud_name: ${process.env.CLOUDINARY_CLOUD_NAME})` : 'Not configured');
   console.log('⏰ Started at:', new Date().toISOString());
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 }); 
